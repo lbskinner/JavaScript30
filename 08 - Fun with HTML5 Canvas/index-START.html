@@ -1,19 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>HTML5 Canvas</title>
-</head>
-<body>
-<canvas id="draw" width="800" height="800"></canvas>
-<script>
-</script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>HTML5 Canvas</title>
+  </head>
+  <body>
+    <canvas id="draw" width="800" height="800"></canvas>
+    <script>
+      const canvas = document.querySelector("#draw");
+      // create context to draw on
+      const ctx = canvas.getContext("2d");
+      //set canvas width and height to the window width and height
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      // set color of the line
+      ctx.strokeStyle = "#BADA55";
+      // set shape (square, round, etc.) when one line meets another line
+      ctx.lineJoin = "round";
+      ctx.lineCap = "round";
+      ctx.lineWidth = 100;
+      // blend colors, can change to different types
+      // ctx.globalCompositeOperation = "multiply";
 
-<style>
-  html, body {
-    margin: 0;
-  }
-</style>
+      let isDrawing = false;
+      let lastX = 0;
+      let lastY = 0;
+      let hue = 0;
+      let direction = true;
 
-</body>
+      function draw(event) {
+        if (!isDrawing) return; // stop the function from running when they are not moused down
+        console.log(event);
+        ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+        ctx.beginPath();
+        // set starting point
+        ctx.moveTo(lastX, lastY);
+        // set end point
+        ctx.lineTo(event.offsetX, event.offsetY);
+        ctx.stroke();
+        // destructuring and array, the same as having two lines: lastX = event.offsetX; lastY = event.offsetY;
+        [lastX, lastY] = [event.offsetX, event.offsetY];
+
+        hue++;
+        // reset hue when it reaches 360, doesn't have to do it, results look the same
+        if (hue >= 360) {
+          hue = 0;
+        }
+        if (ctx.lineWidth >= 100 || ctx.lineWidth <= 1) {
+          direction = !direction;
+        }
+
+        if (direction) {
+          ctx.lineWidth++;
+        } else {
+          ctx.lineWidth--;
+        }
+      }
+
+      canvas.addEventListener("mousedown", (event) => {
+        isDrawing = true;
+        // set starting point when started drawing
+        [lastX, lastY] = [event.offsetX, event.offsetY];
+      });
+
+      canvas.addEventListener("mousemove", draw);
+      canvas.addEventListener("mouseup", () => (isDrawing = false));
+      canvas.addEventListener("mouseout", () => (isDrawing = false));
+    </script>
+
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+    </style>
+  </body>
 </html>
