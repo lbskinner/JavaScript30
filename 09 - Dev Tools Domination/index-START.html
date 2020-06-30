@@ -33,6 +33,9 @@
         "%c I am some great text",
         "font-size:50px; background:red; text-shadow: 10px 10px 0 blue"
       );
+      const cats = ["cat1", "cat2", "cat3"];
+      const msg = "%c" + cats;
+      console.log(msg, "font-size:50px; background:blue; ");
 
       // warning!
       console.warn("OH NOOOOO");
@@ -55,7 +58,7 @@
       );
 
       // clearing
-      console.clear();
+      // console.clear();
 
       // Viewing DOM Elements
       console.log(pElement); // logs the pElement defined on line 51
