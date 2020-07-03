@@ -1,12 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Key Detection</title>
-  <script type="text/javascript" src="https://www.cornify.com/js/cornify.js"></script>
-</head>
-<body>
-<script>
-</script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Key Detection</title>
+    <script
+      type="text/javascript"
+      src="https://www.cornify.com/js/cornify.js"
+    ></script>
+  </head>
+  <body>
+    <script>
+      const pressed = [];
+      const secretCode = "wesbos";
+      window.addEventListener("keyup", (event) => {
+        console.log(event.key);
+        pressed.push(event.key);
+        // don't want the array to get too big, need to limit it
+        // starting the splice from the backend of the array, and keept he array the length of the secretcode
+        pressed.splice(
+          -secretCode.length - 1,
+          pressed.length - secretCode.length
+        );
+        if (pressed.join("").includes(secretCode)) {
+          console.log("Ding Ding");
+          // code to render random unicorns and rainbows onto the page
+          cornify_add();
+        }
+        console.log(pressed);
+      });
+    </script>
+  </body>
 </html>
