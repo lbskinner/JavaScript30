@@ -50,11 +50,23 @@
       <form class="add-items">
         <input type="text" name="item" placeholder="Item Name" required />
         <input type="submit" value="+ Add Item" />
+        <input
+          type="button"
+          value="Uncheck All Items"
+          onClick="uncheckAllItems()"
+        />
+        <input
+          type="button"
+          value="Delete All Items"
+          onClick="deleteAllItems()"
+        />
       </form>
     </div>
 
     <script>
       const addItems = document.querySelector(".add-items");
+      console.log(addItems);
+
       const itemsList = document.querySelector(".plates");
       const items = JSON.parse(localStorage.getItem("items")) || [];
 
@@ -62,6 +74,20 @@
       itemsList.addEventListener("click", toggleDone);
       // call populateItems on page load
       populateList(items, itemsList);
+
+      function deleteAllItems() {
+        console.log("Delete Clicked");
+        items.length = 0;
+        localStorage.setItem("items", JSON.stringify(items));
+        populateList(items, itemsList);
+      }
+
+      function uncheckAllItems() {
+        console.log("clicked");
+        items.forEach((item) => (item.done = false));
+        localStorage.setItem("items", JSON.stringify(items));
+        populateList(items, itemsList);
+      }
 
       function addItem(event) {
         event.preventDefault();
