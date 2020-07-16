@@ -1,48 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Understanding JavaScript's Capture</title>
-</head>
-<body class="bod">
-
-  <div class="one">
-    <div class="two">
-      <div class="three">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Understanding JavaScript's Capture</title>
+  </head>
+  <body class="bod">
+    <div class="one">
+      <div class="two">
+        <div class="three"></div>
       </div>
     </div>
-  </div>
 
-<style>
-  html {
-    box-sizing: border-box;
-  }
-  
-  *, *:before, *:after { 
-    box-sizing: inherit; 
-  }
+    <style>
+      html {
+        box-sizing: border-box;
+      }
 
-  div {
-    width: 100%;
-    padding: 100px;
-  }
+      *,
+      *:before,
+      *:after {
+        box-sizing: inherit;
+      }
 
-  .one {
-    background: thistle;
-  }
+      div {
+        width: 100%;
+        padding: 100px;
+      }
 
-  .two {
-    background: mistyrose;
-  }
+      .one {
+        background: thistle;
+      }
 
-  .three {
-    background: coral;
-  }
-</style>
+      .two {
+        background: mistyrose;
+      }
 
-<button></button>
-<script>
+      .three {
+        background: coral;
+      }
+    </style>
 
-</script>
-</body>
+    <button></button>
+    <script>
+      const divs = document.querySelectorAll("div");
+      const button = document.querySelector("button");
+
+      // the capture event goes from top down/outside to inside (one, two, three)
+      // then the event bubbles from inside out (three, two, one) - when the function gets called
+      // when pass a third argument (an options object) and set capture to true
+      // the function will not run on the bubble up but run on the capture down (one, two, three)
+      // capture is set to false by default
+      divs.forEach((div) =>
+        div.addEventListener("click", logText, {
+          capture: false,
+          // unbind it
+          // only listens to the event once and stops listening
+          // need to reload page to listen again
+          // equivalent to div.removeEventListener("click", logText)
+          once: true,
+        })
+      );
+
+      button.addEventListener(
+        "click",
+        () => {
+          console.log("Button Clicked!!");
+        },
+        {
+          // button clicking only work once
+          // good for store checkouts
+          once: true,
+        }
+      );
+
+      function logText(event) {
+        console.log(this.classList.value);
+        // event.stopPropagation(); // stop event bubbling
+      }
+    </script>
+  </body>
 </html>
