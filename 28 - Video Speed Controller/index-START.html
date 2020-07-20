@@ -1,20 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Video Speed Scrubber</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-  <div class="wrapper">
-    <video class="flex" width="765" height="430" src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4" loop controls></video>
-    <div class="speed">
-      <div class="speed-bar">1×</div>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Video Speed Scrubber</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <video
+        class="flex"
+        width="765"
+        height="430"
+        src="http://clips.vorwaerts-gmbh.de/VfE_html5.mp4"
+        loop
+        controls
+      ></video>
+      <div class="speed">
+        <div class="speed-bar">1×</div>
+      </div>
     </div>
-  </div>
 
-<script>
-</script>
-</body>
+    <script>
+      const speed = document.querySelector(".speed");
+      const bar = speed.querySelector(".speed-bar");
+      const video = document.querySelector(".flex");
+
+      // can add more event listeners such as touchmove, etc
+      speed.addEventListener("mousemove", handleMove);
+
+      function handleMove(event) {
+        // adjust the y axis for other elements, if any
+        const y = event.pageY - this.offsetTop;
+        // this.offsetHeight is the total height of the element
+        const percent = y / this.offsetHeight;
+        const min = 0.4;
+        const max = 4;
+        // convert the height from decimal to percent
+        const height = Math.round(percent * 100) + "%";
+        // calculate the playbackRate to display on the speed bar
+        const playbackRate = percent * (max - min) + min;
+        // display the styles on speed bar
+        bar.style.height = height;
+        // display percent number on speed bar
+        bar.textContent = playbackRate.toFixed(2) + "x";
+        // match the video playbackRate to the speed bar
+        video.playbackRate = playbackRate;
+      }
+    </script>
+  </body>
 </html>
